@@ -1,23 +1,65 @@
-// find models
-
-var user = require('./models/users');
-
 // routes
-module.exports = function(router) {
+module.exports = function(router, parameters) {
+
+    // find models
+    var user = require('./models/users');
+    var UnauthorizedAccessError = require('./errors/unauthorizedAccessError');
+    var jwt = require('jsonwebtoken');
+    _ = require("lodash");
+    var debug = require('debug');
 
     // middleware to use for all requests
-    router.use(function(req, res, next) {
-        // logging request
-        console.log('Dispatching route'+req.body.name);
-        next();
+    var authenticate = function (req, res, next) {
+        var username = req.body.username,
+            password = req.body.password;
+            console.log(username);
+            console.log(password);
+
+        if (_.isEmpty(username) || _.isEmpty(password)) {
+            return next(new UnauthorizedAccessError("401", {
+                message: 'Invalid username or password'
+            }));
+        }
+
+        process.nextTick(function () {
+            user.findOne({
+                username: username
+            }, function (err, user) {
+                if (err || !user) {
+                    return next(new UnauthorizedAccessError("401", {
+                        message: 'User not found.'
+                    }));
+                }
+                console.log(user.password);
+                user.comparePassword(password, function (err, isMatch) {
+                    if (isMatch && !err) {
+                        req.token = jwt.sign(user, parameters.jwtSecret, {expiresInMinutes: 60});
+                        next();
+                    } else {
+                        return next(new UnauthorizedAccessError("401", {
+                                message: 'Invalid username or password'
+                        }));
+                    }
+                });
+            });
+
+        });
+    };
+
+    router.route('/authenticate')
+    .post(authenticate, function(req, res, next){
+        return res.json({token: req.token});
     });
 
     // simple api route without auth for now
     router.route('/users')
         .post(function (req, res) {
             var newUser = new user();
-            newUser.name = req.body.name;
-            newUser.old = req.body.old;
+            newUser.username = req.body.username;
+            newUser.password = req.body.password;
+            newUser.role = req.body.role;
+            newUser.email = req.body.email;
+            newUser.enabled = req.body.enabled;
             newUser.save(function(err){
                 if (err) {
                     res.send(err);
@@ -38,7 +80,7 @@ module.exports = function(router) {
 
     router.route('/users/:user_id')
         .get(function(req, res){
-            user.findById(req.params.nerd_id, function(err, user){
+            user.findById(req.params.user_id, function(err, user){
                 if (err){
                     res.send(err);
                 } else {
@@ -68,7 +110,7 @@ module.exports = function(router) {
                 if (err){
                     res.send(err);
                 } else {
-                    res.json({sucess: true, user_id: req.params.user_id});
+                    res.json({success: true, user_id: req.params.user_id});
                 }
             });
         });

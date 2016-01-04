@@ -5,16 +5,20 @@ var app = express();
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var mongoose = require('mongoose');
+var morgan = require('morgan');
+var jwt = require('express-jwt');
+var unless = require('express-unless');
+var errorHandler = require('./app/errors/errorHandler');
 
 // find local modules
-var db = require('./config/db');
+var parameters = require('./config/parameters.js');
 var routes =  require('./app/routes');
 
 // server port
 var port = process.env.port || 8080;
 
 // mongoose connexion
-mongoose.connect(db.url);
+mongoose.connect(parameters.database);
 
 // parsing application/json
 app.use(bodyParser.json());
@@ -35,8 +39,23 @@ app.use(express.static(__dirname+'/public'));
 
 // load routes in express
 var router = express.Router();
-routes(router);
+routes(router, parameters);
 app.use('/api', router);
+
+// jwt config
+jwt = jwt({secret: parameters.jwtSecret});
+jwt.unless = unless;
+app.use(jwt.unless({path: '/api/authenticate'}));
+app.use(jwt.unless({path: '/api/users'}));
+
+// handle application errors
+app.use(errorHandler);
+/*app.all("*", function (req, res, next) {
+    next(new NotFoundError("404"));
+});*/
+
+// Requests console log
+app.use(morgan('dev'));
 
 // run our application
 app.listen(port);
