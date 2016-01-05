@@ -6,15 +6,10 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var mongoose = require('mongoose');
 var morgan = require('morgan');
-var jwt = require('express-jwt');
-var errorHandler = require('./app/errors/errorHandler');
-
-// find local modules
-var parameters = require('./config/parameters.js');
-var routes =  require('./app/routes');
-
-// server port
-var port = process.env.port || 8080;
+var config = require('./app/config/config');
+var routing = require('./app/config/routing');
+var security = require('./app/config/security');
+var parameters = require('./app/config/parameters.js');
 
 // mongoose connexion
 mongoose.connect(parameters.database);
@@ -36,32 +31,23 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 // users see static files begin with /css or /js instead of /public/css/ and /public/js
 app.use(express.static(__dirname+'/public'));
 
-// jwt config
-jwt = jwt({secret: parameters.jwtSecret});
-/*app.use(jwt.unless({path: [/^(\/(?!api)).*$/ig]}));*/
-app.use(jwt.unless({path: ['/api/authenticate', '/api/register' ]}));
+// security
+security(app);
 
-// load routes in express
-var router = express.Router();
-routes(router, parameters);
-app.use('/api', router);
+// general config
+config(app);
 
-// handle application errors
-app.use(errorHandler);
-
-// route not defined
-app.all("*", function (req, res, next) {
-    next(new NotFoundError("404"));
-});
+// routing
+routing(app);
 
 // Requests console log
-app.use(morgan('dev'));
+app.use(morgan(parameters.server.env));
 
 // run our application
-app.listen(port);
+app.listen(parameters.server.port);
 
 // log start
-console.log('Application start listing to the port'+ port);
+console.log('Application start listing to the port'+ parameters.server.port);
 
 // set our app as a module
 exports = module.exports = app;
