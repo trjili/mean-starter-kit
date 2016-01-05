@@ -37,22 +37,24 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 // users see static files begin with /css or /js instead of /public/css/ and /public/js
 app.use(express.static(__dirname+'/public'));
 
+// jwt config
+jwt = jwt({secret: parameters.jwtSecret});
+/*app.use(jwt.unless({path: [/^(\/(?!api)).*$/ig]}));*/
+app.use(jwt.unless({path: '/api/authenticate'}));
+app.use(jwt.unless({path: '/api/register'}));
+
 // load routes in express
 var router = express.Router();
 routes(router, parameters);
 app.use('/api', router);
 
-// jwt config
-jwt = jwt({secret: parameters.jwtSecret});
-jwt.unless = unless;
-app.use(jwt.unless({path: '/api/authenticate'}));
-app.use(jwt.unless({path: '/api/users'}));
-
 // handle application errors
 app.use(errorHandler);
-/*app.all("*", function (req, res, next) {
+
+// route not defined
+app.all("*", function (req, res, next) {
     next(new NotFoundError("404"));
-});*/
+});
 
 // Requests console log
 app.use(morgan('dev'));

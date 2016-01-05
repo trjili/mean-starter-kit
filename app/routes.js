@@ -5,10 +5,11 @@ module.exports = function(router, parameters) {
     var user = require('./models/users');
     var UnauthorizedAccessError = require('./errors/unauthorizedAccessError');
     var jwt = require('jsonwebtoken');
+    var expressJwt = require('express-jwt');
     _ = require("lodash");
     var debug = require('debug');
 
-    // middleware to use for all requests
+    // middleware to deliverer an access token
     var authenticate = function (req, res, next) {
         var username = req.body.username,
             password = req.body.password;
@@ -46,14 +47,15 @@ module.exports = function(router, parameters) {
         });
     };
 
+    // Authenticate
     router.route('/authenticate')
     .post(authenticate, function(req, res, next){
         return res.json({token: req.token});
     });
 
-    // simple api route without auth for now
-    router.route('/users')
-        .post(function (req, res) {
+    // Register
+    router.route('/register')
+        .post(function(req, res){
             var newUser = new user();
             newUser.username = req.body.username;
             newUser.password = req.body.password;
@@ -67,8 +69,12 @@ module.exports = function(router, parameters) {
                     res.json({'success': true});
                 }
             });
-        })
+        });
+
+    // User CRUD
+    router.route('/users')
         .get(function(req, res){
+            res.json(req.user);
             user.find(function(users, err){
                 if (err){
                     res.send(err);
@@ -116,9 +122,8 @@ module.exports = function(router, parameters) {
         });
 
     // angular routes
-    router.get('*', function(req, res){
+    router.get('/*', function(req, res){
         res.sendfile('../public/views/index.html');
     });
-
 
 };
