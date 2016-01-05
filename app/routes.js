@@ -1,13 +1,13 @@
+var parameters = require('./config/parameters');
+
 // routes
-module.exports = function(router, parameters) {
+module.exports = function(router) {
 
     // find models
     var user = require('./models/users');
     var UnauthorizedAccessError = require('./errors/unauthorizedAccessError');
     var jwt = require('jsonwebtoken');
-    var expressJwt = require('express-jwt');
     _ = require("lodash");
-    var debug = require('debug');
 
     // middleware to deliverer an access token
     var authenticate = function (req, res, next) {
@@ -34,7 +34,7 @@ module.exports = function(router, parameters) {
                 console.log(user.password);
                 user.comparePassword(password, function (err, isMatch) {
                     if (isMatch && !err) {
-                        req.token = jwt.sign(user, parameters.jwtSecret, {expiresInMinutes: 60});
+                        req.token = jwt.sign(user, parameters.jwtSecret, {expiresIn: 3000});
                         next();
                     } else {
                         return next(new UnauthorizedAccessError("401", {
@@ -50,12 +50,12 @@ module.exports = function(router, parameters) {
     // Authenticate
     router.route('/authenticate')
     .post(authenticate, function(req, res, next){
-        return res.json({token: req.token});
+        res.json({token: req.token});
     });
 
     // Register
     router.route('/register')
-        .post(function(req, res){
+        .post(function(req, res, next){
             var newUser = new user();
             newUser.username = req.body.username;
             newUser.password = req.body.password;
@@ -63,66 +63,50 @@ module.exports = function(router, parameters) {
             newUser.email = req.body.email;
             newUser.enabled = req.body.enabled;
             newUser.save(function(err){
-                if (err) {
-                    res.send(err);
-                } else {
-                    res.json({'success': true});
-                }
+                next(err);
+                res.json({'success': true});
             });
         });
 
-    // User CRUD
+    /* User crud */
     router.route('/users')
-        .get(function(req, res){
-            res.json(req.user);
-            user.find(function(users, err){
-                if (err){
-                    res.send(err);
-                }else{
-                    res.json(users);
-                }
+        .get(function(req, res, next){
+            user.find(function(err, users){
+                if (err) { return next(err); }
+                res.json(users);
             });
         });
 
     router.route('/users/:user_id')
-        .get(function(req, res){
+        .get(function(req, res, next){
             user.findById(req.params.user_id, function(err, user){
-                if (err){
-                    res.send(err);
-                } else {
-                    res.json(user);
-                }
+                if (err) { return next(err); }
+                res.json(user);
             });
         })
-        .put(function(req, res){
+        .put(function(req, res, next){
             user.findById(req.params.user_id, function(err, user){
-                if (err){
-                    res.send(err);
-                }else{
-                    user.name = req.body.name;
-                    user.old = req.body.old;
-                    user.save(function(err){
-                        if (err){
-                            res.send(err);
-                        }else{
-                            res.json({update: true});
-                        }
-                    });
-                }
+                if (err) { return next(err); }
+                user.name = req.body.name;
+                user.old = req.body.old;
+                user.save(function(err){
+                    if (err){
+                        res.send(err);
+                    }else{
+                        res.json({update: true});
+                    }
+                });
             });
         })
-        .delete(function(req, res){
+        .delete(function(req, res, next){
             user.remove({_id: req.params.user_id}, function(err, user){
-                if (err){
-                    res.send(err);
-                } else {
-                    res.json({success: true, user_id: req.params.user_id});
-                }
+                next(err);
+                res.json({success: true, user_id: req.params.user_id});
             });
         });
 
     // angular routes
-    router.get('/*', function(req, res){
+    router.get('/', function(req, res){
         res.sendfile('../public/views/index.html');
     });
 

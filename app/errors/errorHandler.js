@@ -1,6 +1,6 @@
 // error handler for all the applications
 handle = function (err, req, res, next) {
-
+    console.log(err);
     var errorType = typeof err,
         code = 500,
         msg = { message: "Internal Server Error" };
@@ -19,7 +19,7 @@ handle = function (err, req, res, next) {
         default:
             break;
     }
-
+    console.log('handle error');
     return res.status(code).json(err.message);
 };
 
