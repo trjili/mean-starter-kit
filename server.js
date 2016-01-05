@@ -7,7 +7,6 @@ var methodOverride = require('method-override');
 var mongoose = require('mongoose');
 var morgan = require('morgan');
 var jwt = require('express-jwt');
-var unless = require('express-unless');
 var errorHandler = require('./app/errors/errorHandler');
 
 // find local modules
@@ -40,8 +39,7 @@ app.use(express.static(__dirname+'/public'));
 // jwt config
 jwt = jwt({secret: parameters.jwtSecret});
 /*app.use(jwt.unless({path: [/^(\/(?!api)).*$/ig]}));*/
-app.use(jwt.unless({path: '/api/authenticate'}));
-app.use(jwt.unless({path: '/api/register'}));
+app.use(jwt.unless({path: ['/api/authenticate', '/api/register' ]}));
 
 // load routes in express
 var router = express.Router();
