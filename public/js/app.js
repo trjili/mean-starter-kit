@@ -1,1 +1,1 @@
-angular.module('meanStarterKit', ['ngRoute']);
+angular.module('meanStarterKit', ['ngRoute', 'ngMaterial', 'ngMdIcons']);
