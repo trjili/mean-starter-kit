@@ -10,7 +10,7 @@ angular.module('meanStarterKit').controller('IndexController', ['$scope', '$mdBo
                 icon: 'dashboard'
             },
             {
-                link : '',
+                link : '/users',
                 title: 'Users',
                 icon: 'group'
             }
