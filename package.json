@@ -13,6 +13,7 @@
     "method-override": "~2.0.2",
     "mongoose": "~3.8.0",
     "morgan": "^1.6.1",
+    "path": "^0.12.7",
     "unless": "^0.1.1"
   }
 }
