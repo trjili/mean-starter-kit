@@ -1,4 +1,116 @@
-<div class="jumbotron text-center"></div>
-    <h1>Page d'acceuil</h1>
-    <p>{{tagLine}}</p>
+<!doctype html>
+<html lang="fr" ng-app="meanStarterKit">
+<head>
+    <meta charset="utf-8">
+    <title>MEAN starter kit</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../libs/angular-material/angular-material.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css"> <!-- custom styles -->
+    <!-- JS -->
+    <script src="../libs/angular/angular.min.js"></script>
+    <script src="../libs/angular-route/angular-route.min.js"></script>
+    <script src="../libs/angular-animate/angular-animate.min.js"></script>
+    <script src="../libs/angular-aria/angular-aria.min.js"></script>
+    <script src="../libs/angular-material/angular-material.min.js"></script>
+    <script src="../libs/angular-material-icons/angular-material-icons.min.js"></script>
+
+    <!-- Angular Material Dependencies -->
+
+    <!-- ANGULAR CUSTOM -->
+    <script src="../js/app.js"></script>
+    <script src="../js/controllers/IndexController.js"></script>
+    <script src="../js/controllers/UserController.js"></script>
+    <script src="../js/services/UserService.js"></script>
+    <script src="../js/routes.js"></script>
+</head>
+<body layout="row" ng-controller="IndexController">
+<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+    <md-toolbar class="md-tall md-hue-2">
+        <span flex></span>
+        <div layout="column" class="md-toolbar-tools-bottom inset">
+        </div>
+    </md-toolbar>
+    <md-list>
+        <md-item ng-repeat="item in menu">
+            <md-item-content md-ink-ripple layout="row" layout-align="start center">
+                <md-button ng-href="{{item.link}}">
+                    <md-icon md-font-set="font-icons" class="md-black">{{item.icon}}</md-icon>
+                    {{item.title}}
+                </md-button>
+            </md-item-content>
+        </md-item>
+        <md-divider></md-divider>
+        <md-subheader>Administration</md-subheader>
+        <md-item ng-repeat="item in admin">
+            <md-item-content md-ink-ripple layout="row" layout-align="start center">
+                <md-button ng-href="{{item.link}}">
+                    <md-icon md-font-set="font-icons" class="md-black">{{item.icon}}</md-icon>
+                    {{item.title}}
+                </md-button>
+            </md-item-content>
+        </md-item>
+    </md-list>
+</md-sidenav>
+<div layout="column" class="relative" layout-fill role="main">
+    <md-button class="md-fab md-fab-bottom-right" aria-label="Add" ng-click="showAdd($event)">
+        <md-icon md-svg-icon="add"><md-icon>
+    </md-button>
+    <md-toolbar ng-show="!showSearch">
+        <div class="md-toolbar-tools">
+            <md-button ng-click="toggleSidenav('left')" hide-gt-md aria-label="Menu">
+                <ng-md-icon icon="menu"></ng-md-icon>
+            </md-button>
+            <h3>
+                Dashboard
+            </h3>
+            <span flex></span>
+            <md-button aria-label="Search" ng-click="showSearch = !showSearch">
+                <md-icon md-svg-icon="search"></md-icon>
+            </md-button>
+            <md-menu md-position-mode="target-right target">
+                <md-button md-fab md-fab-bottom-right ng-click="$mdOpenMenu($event)" class="md-icon-button" aria-label="Open some menu">
+                    <md-icon md-font-set="font-icons" class="">account_circle</md-icon>
+
+                </md-button>
+                <md-menu-content>
+                    <md-menu-item>
+                        <md-button>
+                            <md-icon md-font-set="font-icons">perm_identity</md-icon>
+                            Account
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button>
+                            <md-icon md-font-set="font-icons">exit_to_app</md-icon>
+                            Logout
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </div>
+    </md-toolbar>
+    <md-toolbar class="md-hue-1" ng-show="showSearch">
+        <div class="md-toolbar-tools">
+            <md-button ng-click="showSearch = !showSearch" aria-label="Back">
+                <ng-md-icon icon="arrow_back"></ng-md-icon>
+            </md-button>
+            <md-input-container md-theme="input" flex>
+                <label>&nbsp;</label>
+                <input ng-model="search.who" placeholder="search file">
+            </md-input-container>
+            <md-button aria-label="Search" ng-click="showSearch = !showSearch">
+                <md-icon md-svg-icon="search"></md-icon>
+            </md-button>
+        </div>
+
+    </md-toolbar>
+    <md-content flex md-scroll-y>
+        <ui-view layout="column" layout-fill layout-padding>
+            <div id="content" ng-view flex> </div>
+        </ui-view>
+    </md-content>
 </div>
+
+</body>
+</html>

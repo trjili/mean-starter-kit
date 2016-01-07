@@ -3,8 +3,13 @@ angular.module('meanStarterKit').config(['$routeProvider', '$locationProvider', 
     // routes
     $routeProvider
         .when('/', {
-            templateUrl: 'views/index.html',
+            templateUrl: 'views/dashboard/dashboard.html',
             controller: 'IndexController'
+        })
+        .when('/login', {
+            controller: 'LoginController',
+            templateUrl: 'views/security/login.html',
+            controllerAs: 'vm'
         })
         .when('/users', {
             templateUrl: 'views/users.html',
@@ -30,5 +35,6 @@ angular.module('meanStarterKit').config(['$routeProvider', '$locationProvider', 
         .accentPalette('purple');
     $mdIconProvider
         .icon("search", "../img/svg/search.svg" , 24)
-        .icon("add", "../img/svg/add.svg", 24);
+        .icon("add", "../img/svg/add.svg", 24)
+        .fontSet('font-icons', 'material-icons')
 }]);
