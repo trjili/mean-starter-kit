@@ -5,21 +5,21 @@ angular.module('meanStarterKit').controller('IndexController', ['$scope', '$mdBo
         };
         $scope.menu = [
             {
-                link : '',
+                link : '/',
                 title: 'Dashboard',
                 icon: 'dashboard'
             },
             {
-                link : '/users',
-                title: 'Users',
-                icon: 'group'
+                link : '',
+                title: 'Storage',
+                icon: 'storage'
             }
         ];
         $scope.admin = [
             {
-                link : '',
-                title: 'Trash',
-                icon: 'delete'
+                link : '/#users',
+                title: 'Users',
+                icon: 'group'
             },
             {
                 link : 'showListBottomSheet($event)',

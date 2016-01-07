@@ -1,4 +1,5 @@
 var parameters = require('./config/parameters');
+var path = require('path');
 
 // routes
 module.exports = function(router) {
@@ -104,10 +105,5 @@ module.exports = function(router) {
                 res.json({success: true, user_id: req.params.user_id});
             });
         });
-
-    // angular routes
-    router.get('/', function(req, res){
-        res.sendfile('../public/views/index.html');
-    });
 
 };
