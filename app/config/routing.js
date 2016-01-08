@@ -18,12 +18,7 @@ module.exports = function (app) {
 
     // angular routes
     clientRouter.get('/', function(req, res){
-        if (req.user) res.redirect('/');
         res.sendfile(path.resolve('public/views/index.html'));
-    });
-    clientRouter.get('/login', function(req, res){
-        if (req.user) res.redirect('/');
-        res.sendfile(path.resolve('public/views/security/login.html'));
     });
 
     // route not defined
