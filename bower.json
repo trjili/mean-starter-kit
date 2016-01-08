@@ -8,6 +8,7 @@
     "angular": "latest",
     "angular-route": "latest",
     "angular-material-icons": "~0.6.0",
-    "angular-material": "~1.0.1"
+    "angular-material": "~1.0.1",
+    "angular-local-storage": "~0.2.3"
   }
 }

@@ -1,11 +1,8 @@
-angular.module('meanStarterKit').controller('loginController', LoginController);
-
-LoginController.$inject = ['$location'];
-function LoginController($location) {
-    var vm = this;
-    vm.login = login;
-    function login() {
-        vm.dataLoading = true;
-        $location.path('/');
+angular.module('meanStarterKit').controller('LoginController',['$scope', '$rootScope', '$location', 'AuthenticationService', function($scope, $rootScope, $location, AuthenticationService){
+    $scope.user = {};
+    console.log('login controller');
+    $scope.login = function(){
+        console.log('login submit');
+        AuthenticationService.login($scope.user.username, $scope.user.password);
     };
-}
+}]);

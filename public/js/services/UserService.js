@@ -1,4 +1,4 @@
-angular.module('meanStarterKit').factory('User', ['$http', function($http){
+angular.module('meanStarterKit').factory('UserService', ['$http', function($http){
     return {
         // get all nerds
         get: function(){
