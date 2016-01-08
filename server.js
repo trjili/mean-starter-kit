@@ -34,11 +34,11 @@ app.use(express.static(__dirname+'/public'));
 // security
 security(app);
 
-// general config
-config(app);
-
 // routing
 routing(app);
+
+// general config
+config(app);
 
 // Requests console log
 app.use(morgan(parameters.server.env));

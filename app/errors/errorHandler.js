@@ -20,7 +20,7 @@ handle = function (err, req, res, next) {
             break;
     }
     console.log('handle error');
-    return res.status(code).json(err.message);
+    return res.status(code).json({success: false, message: err.message});
 };
 
 module.exports = handle;
