@@ -17,6 +17,7 @@ angular.module('meanStarterKit').factory('AuthenticationService', ['$http', '$ro
         var data = response.data;
         $rootScope.user = data.user;
         $rootScope.userLoginIn = true;
+        $rootScope.token = data.token;
         console.log(data.token);
         localStorageService.set('token', data.token);
         $location.path('/');

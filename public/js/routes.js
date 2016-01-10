@@ -1,4 +1,4 @@
-angular.module('meanStarterKit').config(['$routeProvider', '$locationProvider', '$mdThemingProvider', '$mdIconProvider', 'localStorageServiceProvider', function($routeProvider, $locationProvider, $mdThemingProvider, $mdIconProvider, localStorageServiceProvider){
+angular.module('meanStarterKit').config(['$routeProvider', '$locationProvider', '$httpProvider', '$mdThemingProvider', '$mdIconProvider', 'localStorageServiceProvider', function($routeProvider, $locationProvider, $httpProvider, $mdThemingProvider, $mdIconProvider, localStorageServiceProvider){
 
     // routes
     $routeProvider
@@ -44,15 +44,18 @@ angular.module('meanStarterKit').config(['$routeProvider', '$locationProvider', 
     // local storage config
     localStorageServiceProvider
         .setPrefix('mean');
+
+    // http interceptor
+    $httpProvider.interceptors.push('HttpInterceptorService');
 }])
 .run(function($rootScope, $location) {
-$rootScope.$on( "$routeChangeStart", function(event, next, current) {
-    if ($rootScope.userLoginIn == null) {
-        // no logged user, redirect to /login
-        if ( next.templateUrl === "views/security/login.html") {
-        } else {
-            $location.path("/login");
+    $rootScope.$on( "$routeChangeStart", function(event, next, current) {
+        if ($rootScope.userLoginIn == null) {
+            // no logged user, redirect to /login
+            if ( next.templateUrl === "views/security/login.html") {
+            } else {
+                $location.path("/login");
+            }
         }
-    }
-});
+    });
 });
