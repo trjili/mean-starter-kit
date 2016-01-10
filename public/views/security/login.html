@@ -1,28 +1,28 @@
-<div layout="row" flex layout-align="center center" ng-controller="LoginController as lc">
-    <div layout="column" layout-align="center">
-        <md-whiteframe class="md-whiteframe-z1" layout="column"  layout-padding>
+<div layout="column"  flex layout-align="center center" ng-controller="LoginController as lc">
+    <md-whiteframe class="md-whiteframe-z1"layout="column"  layout-padding>
+        <md-content flex md-scroll-y>
             <form name="form" role="form">
-            <md-content  flex md-scroll-y>
-                    <md-input-container class="md-block">
-                        <label>Email</label>
-                        <input type="text" ng-model="user.username">
-                    </md-input-container>
-                    <md-input-container class="md-block">
-                        <label>Password</label>
-                        <input ng-model="user.password" type="password">
-                    </md-input-container>
-                    <md-input-container layout-align="center center">
-                        <div layout="row" layout-sm="column" layout-margin>
-                            <md-button class="md-raised" flex="50" flex-sm="100" ng-click="login()">Login</md-button>
-                            <md-button class="md-raised md-primary" flex="50" flex-sm="100">Register</md-button>
-                        </div>
-                    </md-input-container>
-                <input type="submit">
-            </md-content>
+                <md-input-container class="md-block">
+                    <label>Email</label>
+                    <input type="text" ng-model="user.username">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Password</label>
+                    <input ng-model="user.password" type="password">
+                </md-input-container>
+                <md-input-container>
+                    <md-button class="md-raised" flex="50" flex-sm="100" ng-click="login()">Login</md-button>
+                    <md-button class="md-raised md-primary" flex="50" flex-sm="100">Register</md-button>
+                    <md-checkbox class="red md-block" ng-model="user.remember" ng-init="user.remember=false">
+                        Remember me
+                    </md-checkbox>
+                </md-input-container>
             </form>
-        </md-whiteframe>
-    </div>
+        </md-content>
+    </md-whiteframe>
 </div>
+
+
 
 
 

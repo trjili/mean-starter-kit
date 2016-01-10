@@ -25,10 +25,11 @@
     <script src="../js/controllers/LoginController.js"></script>
     <script src="../js/services/UserService.js"></script>
     <script src="../js/services/AuthenticationService.js"></script>
+    <script src="../js/services/TokenInterceptorService.js"></script>
     <script src="../js/routes.js"></script>
 </head>
 <body layout="row" ng-controller="IndexController">
-<md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+<md-sidenav ng-show="$root.userLoginIn" layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
     <md-toolbar class="md-tall md-hue-2">
         <span flex></span>
         <div layout="column" class="md-toolbar-tools-bottom inset">
@@ -56,11 +57,11 @@
     </md-list>
 </md-sidenav>
 <div layout="column" class="relative" layout-fill role="main">
-    <md-button class="md-fab md-fab-bottom-right" aria-label="Add" ng-click="showAdd($event)">
+    <md-button ng-show="$root.userLoginIn" class="md-fab md-fab-bottom-right" aria-label="Add" ng-click="showAdd($event)">
         <md-icon md-svg-icon="add"><md-icon>
     </md-button>
     <md-toolbar ng-show="!showSearch">
-        <div class="md-toolbar-tools">
+        <div class="md-toolbar-tools" ng-show="$root.userLoginIn">
             <md-button ng-click="toggleSidenav('left')" hide-gt-md aria-label="Menu">
                 <ng-md-icon icon="menu"></ng-md-icon>
             </md-button>
@@ -68,10 +69,10 @@
                 Dashboard
             </h3>
             <span flex></span>
-            <md-button aria-label="Search" ng-click="showSearch = !showSearch">
+            <md-button  ng-show="$root.userLoginIn" aria-label="Search" ng-click="showSearch = !showSearch">
                 <md-icon md-svg-icon="search"></md-icon>
             </md-button>
-            <md-menu md-position-mode="target-right target">
+            <md-menu ng-show="$root.userLoginIn" md-position-mode="target-right target">
                 <md-button md-fab md-fab-bottom-right ng-click="$mdOpenMenu($event)" class="md-icon-button" aria-label="Open some menu">
                     <md-icon md-font-set="font-icons" class="">account_circle</md-icon>
 
@@ -113,6 +114,11 @@
             <div id="content" ng-view flex> </div>
         </ui-view>
     </md-content>
+    <md-toolbar>
+        <div layout="row" layout-align="center center" flex>
+            <span>@Tarek rjili 2015</span>
+        </div>
+    </md-toolbar>
 </div>
 
 </body>
