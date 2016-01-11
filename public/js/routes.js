@@ -47,15 +47,19 @@ angular.module('meanStarterKit').config(['$routeProvider', '$locationProvider', 
 
     // http interceptor
     $httpProvider.interceptors.push('HttpInterceptorService');
+
 }])
-.run(function($rootScope, $location) {
+.run(function($rootScope, $location, AuthenticationService) {
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
-        if ($rootScope.userLoginIn == null) {
+        if (!AuthenticationService.isAuthenticated()) {
             // no logged user, redirect to /login
             if ( next.templateUrl === "views/security/login.html") {
+
             } else {
                 $location.path("/login");
             }
+        } else {
+            AuthenticationService.autoLogin()
         }
     });
 });
