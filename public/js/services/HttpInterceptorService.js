@@ -1,11 +1,10 @@
-angular.module('meanStarterKit').service('HttpInterceptorService', function($rootScope, AUTH_EVENTS, $q) {
+angular.module('meanStarterKit').service('HttpInterceptorService', ['localStorageService', '$rootScope', 'AUTH_EVENTS', '$q', function(localStorageService, $rootScope, AUTH_EVENTS, $q) {
     var service = this;
 
     service.request = function(config) {
-        var token = $rootScope.userLoginIn ? $rootScope.token : null;
-
+        var token = localStorageService.get('token');
         if (token) {
-            config.headers.authorization = token;
+            config.headers.authorization = 'Bearer '+token;
         }
         return config;
     };
@@ -20,4 +19,4 @@ angular.module('meanStarterKit').service('HttpInterceptorService', function($roo
 
         return $q.reject(response);
     }
-});
+}]);

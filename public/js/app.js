@@ -1,1 +1,1 @@
-angular.module('meanStarterKit', ['ngRoute', 'ngMaterial', 'ngMdIcons', 'LocalStorageModule']);
+angular.module('meanStarterKit', ['ngRoute', 'ngMaterial', 'ngMdIcons', 'LocalStorageModule', 'angular-jwt', 'md.data.table']);

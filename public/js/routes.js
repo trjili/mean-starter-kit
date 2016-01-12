@@ -17,10 +17,7 @@ angular.module('meanStarterKit').config(['$routeProvider', '$locationProvider', 
         });
 
     // html5 mode
-    $locationProvider.html5Mode({
-        enabled: true,
-        requireBase: false
-    });
+    //$locationProvider.html5Mode(true);
 
     // angular material config
     var customBlueMap = $mdThemingProvider.extendPalette('light-blue', {
@@ -28,6 +25,7 @@ angular.module('meanStarterKit').config(['$routeProvider', '$locationProvider', 
         'contrastDarkColors': ['50'],
         '50': 'ffffff'
     });
+
     $mdThemingProvider.definePalette('customBlue', customBlueMap);
     $mdThemingProvider.theme('default')
         .primaryPalette('customBlue', {
@@ -42,24 +40,19 @@ angular.module('meanStarterKit').config(['$routeProvider', '$locationProvider', 
         .fontSet('font-icons', 'material-icons');
 
     // local storage config
-    localStorageServiceProvider
-        .setPrefix('mean');
+    //localStorageServiceProvider.setPrefix('mean');
 
     // http interceptor
     $httpProvider.interceptors.push('HttpInterceptorService');
 
 }])
 .run(function($rootScope, $location, AuthenticationService) {
-    $rootScope.$on( "$routeChangeStart", function(event, next, current) {
+    $rootScope.$on('$routeChangeStart', function(event, next, current) {
+        console.log('auth'+AuthenticationService.isAuthenticated());
         if (!AuthenticationService.isAuthenticated()) {
-            // no logged user, redirect to /login
-            if ( next.templateUrl === "views/security/login.html") {
-
-            } else {
-                $location.path("/login");
-            }
+            $location.path("/login");
         } else {
-            AuthenticationService.autoLogin()
+            AuthenticationService.autoLogin();
         }
     });
 });

@@ -1,56 +1,53 @@
 'use strict';
 
-angular.module('meanStarterKit').factory('AuthenticationService', ['$http', '$rootScope', '$location', 'localStorageService', '$window', function($http, $rootScope, $location, localStorageService, $window){
+angular.module('meanStarterKit').factory('AuthenticationService', ['$http', '$rootScope', '$location', 'jwtHelper', 'localStorageService', function($http, $rootScope, $location, jwtHelper, localStorageService){
 
     return {
-        login : function(username, password) {
-            console.log('auth service');
+        login: function(username, password, callback) {
             $http.post('/api/authenticate', {
                 username: username,
                 password: password
-            }).then(successLogin, errorLogin)
+            }).then(function(response){
+                var data = response.data;
+                var token = data.token;
+                localStorageService.set('token', data.token);
+                $rootScope.userLoginIn = true;
+                $rootScope.token = localStorageService.get('token');
+                $rootScope.user = jwtHelper.decodeToken($rootScope.token);
+                callback(true);
+            }, function(err){
+                $rootScope.userLoginIn = false;
+                $rootScope.user = {};
+                $rootScope.errLogin = err;
+                callback(false);
+            })
         },
         isAuthenticated: function() {
             var token = localStorageService.get('token');
-            return checkJwtToken(token);
+            if (token) {
+                console.log(jwtHelper.decodeToken(token));
+                //return jwtHelper.decodeToken(token);
+                return true;
+            } else {
+                return false;
+            }
 
         },
-        autoLogin: function () {
-        $rootScope.userLoginIn = true;
+        getCurrentUser: function (){
+
         },
         isAuthorized: function(authorizedRoles) {
 
+        },
+        getToken: function () {
+            return  localStorageService.get('token');
+        },
+        autoLogin: function () {
+            $rootScope.userLoginIn = true;
+            $rootScope.token = localStorageService.get('token');
+            $rootScope.user = jwtHelper.decodeToken($rootScope.token);
         }
     };
 
-    function successLogin(response){
-        var data = response.data;
-        $rootScope.user = data.user;
-        $rootScope.userLoginIn = true;
-        $rootScope.token = data.token;
-        localStorageService.set('token', data.token);
-        $location.path('/');
-    }
-
-    function errorLogin(err){
-        $rootScope.userLoginIn = false;
-        $rootScope.user = {};
-        $rootScope.errLogin = err;
-    }
-
-    function checkJwtToken(token){
-        if(token) {
-            var params = parseToken(token);
-            return Math.round(new Date().getTime() / 1000) <= params.exp;
-        } else {
-            return false;
-        }
-    }
-
-    function parseToken(token) {
-        var base64Url = token.split('.')[1];
-        var base64 = base64Url.replace('-', '+').replace('_', '/');
-        return JSON.parse($window.atob(base64));
-    }
 }
 ]);
