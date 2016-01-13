@@ -3,7 +3,7 @@
 angular.module('meanStarterKit').factory('AuthenticationService', ['$http', '$rootScope', '$location', 'jwtHelper', 'localStorageService', function($http, $rootScope, $location, jwtHelper, localStorageService){
 
     return {
-        login: function(username, password, callback) {
+        login: function(username, password, result) {
             $http.post('/api/authenticate', {
                 username: username,
                 password: password
@@ -11,22 +11,14 @@ angular.module('meanStarterKit').factory('AuthenticationService', ['$http', '$ro
                 var data = response.data;
                 var token = data.token;
                 localStorageService.set('token', data.token);
-                $rootScope.userLoginIn = true;
-                $rootScope.token = localStorageService.get('token');
-                $rootScope.user = jwtHelper.decodeToken($rootScope.token);
-                callback(true);
+                result(data);
             }, function(err){
-                $rootScope.userLoginIn = false;
-                $rootScope.user = {};
-                $rootScope.errLogin = err;
-                callback(false);
+                result(err.data);
             })
         },
         isAuthenticated: function() {
-            var token = localStorageService.get('token');
+            var token = this.getToken();
             if (token) {
-                console.log(jwtHelper.decodeToken(token));
-                //return jwtHelper.decodeToken(token);
                 return true;
             } else {
                 return false;
@@ -34,18 +26,27 @@ angular.module('meanStarterKit').factory('AuthenticationService', ['$http', '$ro
 
         },
         getCurrentUser: function (){
-
-        },
-        isAuthorized: function(authorizedRoles) {
-
+            if (this.isAuthenticated()) {
+                return jwtHelper.decodeToken(this.getToken());
+            } else {
+                return null;
+            }
         },
         getToken: function () {
             return  localStorageService.get('token');
         },
+        removeToken: function() {
+            localStorageService.remove('token')
+        },
         autoLogin: function () {
             $rootScope.userLoginIn = true;
-            $rootScope.token = localStorageService.get('token');
-            $rootScope.user = jwtHelper.decodeToken($rootScope.token);
+            $rootScope.token = this.getToken();
+            $rootScope.user = this.getCurrentUser();
+        },
+        logout: function() {
+            $rootScope.userLoginIn = false;
+            $rootScope.user = {};
+            this.removeToken();
         }
     };
 

@@ -11,6 +11,10 @@ angular.module('meanStarterKit').config(['$routeProvider', '$locationProvider', 
             templateUrl: 'views/security/login.html',
             controllerAs: 'vm'
         })
+        .when('/logout', {
+            controller: 'LoginController',
+            controllerAs: 'vm'
+        })
         .when('/users', {
             templateUrl: 'views/users.html',
             controller: 'UserController'
@@ -48,7 +52,6 @@ angular.module('meanStarterKit').config(['$routeProvider', '$locationProvider', 
 }])
 .run(function($rootScope, $location, AuthenticationService) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
-        console.log('auth'+AuthenticationService.isAuthenticated());
         if (!AuthenticationService.isAuthenticated()) {
             $location.path("/login");
         } else {

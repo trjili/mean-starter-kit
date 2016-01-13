@@ -90,8 +90,8 @@
                             Account
                         </md-button>
                     </md-menu-item>
-                    <md-menu-item>
-                        <md-button>
+                    <md-menu-item ng-controller="LoginController as lc">
+                        <md-button ng-click="logout()">
                             <md-icon md-font-set="font-icons">exit_to_app</md-icon>
                             Logout
                         </md-button>

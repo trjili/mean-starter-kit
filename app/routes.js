@@ -51,7 +51,7 @@ module.exports = function(router) {
     // Authenticate
     router.route('/authenticate')
     .post(authenticate, function(req, res, next){
-        res.json({token: req.token});
+        res.json({token: req.token, success: true});
     });
 
     // Register
