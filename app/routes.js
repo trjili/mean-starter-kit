@@ -72,9 +72,15 @@ module.exports = function(router) {
     /* User crud */
     router.route('/users')
         .get(function(req, res, next){
-            user.find(function(err, users){
+            var params = JSON.parse(req.query.query);
+            var page = params.page;
+            var limit = params.limit;
+            var order = params.order;
+            user.find({}).sort(order).skip((page - 1)*limit).limit(limit).exec(function(err, users){
                 if (err) { return next(err); }
-                res.json(users);
+                user.count().exec(function(err, count){
+                    res.json({users: users, pages: Math.floor(count/limit)});
+                })
             });
         });
 
