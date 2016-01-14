@@ -1,8 +1,8 @@
 angular.module('meanStarterKit').factory('UserService', ['$http', function($http){
     return {
         // get all nerds
-        get: function(){
-            return $http.get('/api/users');
+        get: function(query){
+            return $http.get('/api/users', {params: {query: query}});
         },
         // create a nerd
         create: function(userData){

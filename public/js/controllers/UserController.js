@@ -1,18 +1,20 @@
-angular.module('meanStarterKit').controller('UserController',['$scope', 'UserService', '$mdDialog', function($scope, UserService, $mdDialog){
+angular.module('meanStarterKit').controller('UserController',['$scope', 'UserService', '$timeout', function($scope, UserService, $timeout){
 
     $scope.selected = [];
 
     $scope.query = {
-        order: 'name',
+        order: '_id',
         limit: 5,
         page: 1
     };
     // init list
-    $scope.promise = getUsers();
+    $scope.promise = getUsers($scope.query);
 
     function getUsers(query) {
-        return UserService.get().then(function(response){
-                $scope.users = response.data;
+        return UserService.get(query).then(function(response){
+            var data = response.data;
+            $scope.users = data.users;
+            $scope.pages = data.pages;
         });
     }
 
