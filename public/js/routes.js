@@ -16,35 +16,25 @@ angular.module('meanStarterKit').config(['$routeProvider', '$locationProvider', 
             controllerAs: 'vm'
         })
         .when('/users', {
-            templateUrl: 'views/users.html',
+            templateUrl: 'views/user/users.html',
             controller: 'UserController'
         });
 
-    // html5 mode
-    //$locationProvider.html5Mode(true);
-
     // angular material config
-    var customBlueMap = $mdThemingProvider.extendPalette('light-blue', {
+  /*  var customBlueMap = $mdThemingProvider.extendPalette('light-blue', {
         'contrastDefaultColor': 'light',
         'contrastDarkColors': ['50'],
         '50': 'ffffff'
     });
 
-    $mdThemingProvider.definePalette('customBlue', customBlueMap);
-    $mdThemingProvider.theme('default')
-        .primaryPalette('customBlue', {
-            'default': '500',
-            'hue-1': '50'
-        })
-        .accentPalette('purple');
+    $mdThemingProvider.definePalette('customBlue', customBlueMap);*/
+    $mdThemingProvider.theme('default').accentPalette('purple');
 
+    // icons provider
     $mdIconProvider
         .icon("search", "../img/svg/search.svg" , 24)
         .icon("add", "../img/svg/add.svg", 24)
         .fontSet('font-icons', 'material-icons');
-
-    // local storage config
-    //localStorageServiceProvider.setPrefix('mean');
 
     // http interceptor
     $httpProvider.interceptors.push('HttpInterceptorService');

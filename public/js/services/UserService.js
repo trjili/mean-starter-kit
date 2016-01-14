@@ -6,7 +6,7 @@ angular.module('meanStarterKit').factory('UserService', ['$http', function($http
         },
         // create a nerd
         create: function(userData){
-            return $http.post('/api/users', userData);
+            return $http.post('/api/register', userData);
         },
         // delete a nerd
         delete: function(userId){

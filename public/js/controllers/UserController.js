@@ -1,4 +1,4 @@
-angular.module('meanStarterKit').controller('UserController',['$scope', 'UserService', '$timeout', function($scope, UserService, $timeout){
+angular.module('meanStarterKit').controller('UserController',['$scope', 'UserService', '$mdDialog', function($scope, UserService, $mdDialog){
 
     $scope.selected = [];
 
@@ -24,4 +24,37 @@ angular.module('meanStarterKit').controller('UserController',['$scope', 'UserSer
         $scope.promise = getUsers(angular.extend({}, $scope.query, {order: order}));
 
     };
+
+    $scope.showAdd = function(ev) {
+        $mdDialog.show({
+            controller: UserDialogController,
+            templateUrl: '../../views/user/dialog/addUser.html',
+            targetEvent: ev,
+            clickOutsideToClose:true
+        })
+            .then(function(answer) {
+                $scope.alert = 'You said the information was "' + answer + '".';
+            }, function() {
+                $scope.alert = 'You cancelled the dialog.';
+            });
+    };
+
+    function UserDialogController($scope, $mdDialog, $route) {
+        $scope.user = {};
+        $scope.hide = function() {
+            $mdDialog.hide();
+        };
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        };
+        $scope.createUser = function() {
+            UserService.create($scope.user).then(function(response){
+                $mdDialog.hide();
+                $route.reload();
+            }, function(err){
+
+            });
+        };
+    }
+
 }]);

@@ -63,9 +63,9 @@ module.exports = function(router) {
             newUser.role = req.body.role;
             newUser.email = req.body.email;
             newUser.enabled = req.body.enabled;
-            newUser.save(function(err){
-                next(err);
-                res.json({'success': true});
+            newUser.save(function(err, user){
+                if (err) {next(err);}
+                res.json({'success': true, id: user._id});
             });
         });
 
