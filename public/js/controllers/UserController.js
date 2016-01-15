@@ -1,4 +1,4 @@
-angular.module('meanStarterKit').controller('UserController',['$scope', 'UserService', '$mdDialog', function($scope, UserService, $mdDialog){
+angular.module('meanStarterKit').controller('UserController',['$scope', 'UserService', '$mdDialog', '$route', function($scope, UserService, $mdDialog, $route){
 
     // datable data and pagination
     $scope.selected = [];
@@ -65,13 +65,13 @@ angular.module('meanStarterKit').controller('UserController',['$scope', 'UserSer
 
     // delete one or more users
     $scope.deleteUsers = function(){
+        var usersIds = [];
         angular.forEach($scope.selected, function(user){
-            UserService.delete(user._id).then(function(response){
-
-            }, function(err){
-
-            });
+            usersIds.push(user._id);
         });
-        $route.reload();
+        UserService.multipleDelete(usersIds).then(function(response){
+            $route.reload();
+        }, function(err){
+        });
     }
 }]);

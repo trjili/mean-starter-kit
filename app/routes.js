@@ -82,8 +82,19 @@ module.exports = function(router) {
                     res.json({users: users, pages: Math.ceil(count/limit), total: count});
                 })
             });
+        })
+        .delete(function(req, res, next){
+            var usersIds = req.query.ids;
+            var usersDeleted = [];
+            for (var key in usersIds) {
+                var userId = usersIds[key];
+                user.remove({_id: userId}, function(err, user){
+                    if (err){ return next(err); }
+                    usersDeleted.push(userId);
+                });
+            }
+            res.json({success: true, ids: usersDeleted});
         });
-
     router.route('/users/:user_id')
         .get(function(req, res, next){
             user.findById(req.params.user_id, function(err, user){
@@ -106,11 +117,10 @@ module.exports = function(router) {
             });
         })
         .delete(function(req, res, next){
-            user.remove({_id: req.params.user_d}, function(err, user){
+            user.remove({_id: req.params.user_id}, function(err, user){
                 if (err){ return next(err); }
                 console.log(user);
                 res.json({success: true, userId: req.params.user_id});
             });
         });
-
 };

@@ -12,6 +12,9 @@ angular.module('meanStarterKit').factory('UserService', ['$http', function($http
         delete: function(userId){
             console.log(userId);
             return $http.delete('/api/users/'+userId);
+        },
+        multipleDelete: function(ids){
+            return $http.delete('/api/users', {params: {"ids[]": ids}});
         }
     };
 }]);
