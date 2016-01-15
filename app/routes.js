@@ -79,7 +79,7 @@ module.exports = function(router) {
             user.find({}).sort(order).skip((page - 1)*limit).limit(limit).exec(function(err, users){
                 if (err) { return next(err); }
                 user.count().exec(function(err, count){
-                    res.json({users: users, pages: Math.floor(count/limit)});
+                    res.json({users: users, pages: Math.ceil(count/limit), total: count});
                 })
             });
         });
@@ -106,9 +106,10 @@ module.exports = function(router) {
             });
         })
         .delete(function(req, res, next){
-            user.remove({_id: req.params.user_id}, function(err, user){
-                next(err);
-                res.json({success: true, user_id: req.params.user_id});
+            user.remove({_id: req.params.user_d}, function(err, user){
+                if (err){ return next(err); }
+                console.log(user);
+                res.json({success: true, userId: req.params.user_id});
             });
         });
 

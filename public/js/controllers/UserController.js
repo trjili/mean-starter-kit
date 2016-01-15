@@ -1,5 +1,6 @@
-angular.module('meanStarterKit').controller('UserController',['$scope', 'UserService', '$timeout', function($scope, UserService, $timeout){
+angular.module('meanStarterKit').controller('UserController',['$scope', 'UserService', '$mdDialog', function($scope, UserService, $mdDialog){
 
+    // datable data and pagination
     $scope.selected = [];
 
     $scope.query = {
@@ -7,6 +8,7 @@ angular.module('meanStarterKit').controller('UserController',['$scope', 'UserSer
         limit: 5,
         page: 1
     };
+
     // init list
     $scope.promise = getUsers($scope.query);
 
@@ -15,6 +17,7 @@ angular.module('meanStarterKit').controller('UserController',['$scope', 'UserSer
             var data = response.data;
             $scope.users = data.users;
             $scope.pages = data.pages;
+            $scope.total = data.total;
         });
     }
 
@@ -27,6 +30,7 @@ angular.module('meanStarterKit').controller('UserController',['$scope', 'UserSer
 
     };
 
+    // add a user
     $scope.showAdd = function(ev) {
         $mdDialog.show({
             controller: UserDialogController,
@@ -59,4 +63,15 @@ angular.module('meanStarterKit').controller('UserController',['$scope', 'UserSer
         };
     }
 
+    // delete one or more users
+    $scope.deleteUsers = function(){
+        angular.forEach($scope.selected, function(user){
+            UserService.delete(user._id).then(function(response){
+
+            }, function(err){
+
+            });
+        });
+        $route.reload();
+    }
 }]);

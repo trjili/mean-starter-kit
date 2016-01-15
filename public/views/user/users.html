@@ -3,7 +3,7 @@
         <div class="md-toolbar-tools">
             <span>Users</span>
             <div flex></div>
-            <md-button ng-show="selected" class="md-mini" ng-style="" aria-label="Eat cake" ng-click="showAdd($event)">
+            <md-button ng-show="!!selected.length" class="md-mini" ng-style="" aria-label="Delete users" ng-click="deleteUsers($event)">
                 <md-icon md-font-set="font-icons">delete</md-icon>
             </md-button>
             <md-button class="md-fab md-mini" aria-label="Eat cake" ng-click="showAdd($event)">
@@ -35,4 +35,4 @@
     </table>
 </md-table-container>
 
-<md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{users.count}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
+<md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{total}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>

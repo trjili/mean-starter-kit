@@ -10,7 +10,8 @@ angular.module('meanStarterKit').factory('UserService', ['$http', function($http
         },
         // delete a nerd
         delete: function(userId){
-            return $http.delete('/api/users/', userId);
+            console.log(userId);
+            return $http.delete('/api/users/'+userId);
         }
     };
 }]);
