@@ -6,8 +6,6 @@ angular.module('meanStarterKit').constant('AUTH_EVENTS', {
     notAuthenticated: 'auth-not-authenticated',
     notAuthorized: 'auth-not-authorized'
 }).constant('USER_ROLES', {
-    all: '*',
-    admin: 'admin',
-    editor: 'editor',
-    guest: 'guest'
+    ADMIN: 'Admin',
+    USER: 'User'
 });

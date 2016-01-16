@@ -45,8 +45,9 @@ angular.module('meanStarterKit').controller('UserController',['$scope', 'UserSer
             });
     };
 
-    function UserDialogController($scope, $mdDialog, $route) {
+    function UserDialogController($scope, $mdDialog, $route, USER_ROLES) {
         $scope.user = {};
+        $scope.roles = USER_ROLES;
         $scope.hide = function() {
             $mdDialog.hide();
         };

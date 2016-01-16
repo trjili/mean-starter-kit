@@ -14,9 +14,6 @@ module.exports = function(router) {
     var authenticate = function (req, res, next) {
         var username = req.body.username,
             password = req.body.password;
-            console.log(username);
-            console.log(password);
-
         if (_.isEmpty(username) || _.isEmpty(password)) {
             return next(new UnauthorizedAccessError("401", {
                 message: 'Invalid username or password'
@@ -119,7 +116,6 @@ module.exports = function(router) {
         .delete(function(req, res, next){
             user.remove({_id: req.params.user_id}, function(err, user){
                 if (err){ return next(err); }
-                console.log(user);
                 res.json({success: true, userId: req.params.user_id});
             });
         });
