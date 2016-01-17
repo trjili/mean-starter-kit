@@ -8,4 +8,10 @@ angular.module('meanStarterKit').constant('AUTH_EVENTS', {
 }).constant('USER_ROLES', {
     ADMIN: 'Admin',
     USER: 'User'
-});
+}).constant('LOCALES', {
+        'locales': {
+            'fr': 'Français',
+            'en': 'English'
+        },
+        'preferredLocale': 'en'
+    });

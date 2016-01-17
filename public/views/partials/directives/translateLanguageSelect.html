@@ -1,0 +1,12 @@
+<md-menu ng-if="visible" ng-show="$root.userLoginIn" md-position-mode="target-right target">
+    <md-button md-fab md-fab-bottom-right ng-click="$mdOpenMenu($event)" class="md-icon-button" aria-label="languages">
+        <md-icon md-font-set="font-icons" class="">language</md-icon>
+    </md-button>
+    <md-menu-content>
+        <md-menu-item ng-repeat="localesDisplayName in localesDisplayNames">
+            <md-button ng-modal="localesDisplayName" ng-click=" currentLocaleDisplayName = localesDisplayName; changeLanguage(currentLocaleDisplayName)">
+                {{localesDisplayName}}
+            </md-button>
+        </md-menu-item>
+    </md-menu-content>
+</md-menu>

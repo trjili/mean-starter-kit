@@ -15,11 +15,17 @@
     <script src="../libs/angular-animate/angular-animate.min.js"></script>
     <script src="../libs/angular-aria/angular-aria.min.js"></script>
     <script src="../libs/angular-material/angular-material.min.js"></script>
+    <script src="../libs/angular-translate/angular-translate.min.js"></script>
     <script src="../libs/angular-material-icons/angular-material-icons.min.js"></script>
     <script src="../libs/angular-local-storage/dist/angular-local-storage.js"></script>
     <script src="../libs/angular-jwt/dist/angular-jwt.min.js"></script>
     <script src="../libs/angular-material-data-table/dist/md-data-table.min.js"></script>
-    <script src="../libs/ngstorage/ngStorage.min.js"></script>
+    <script src="../libs/angular-cookies/angular-cookies.min.js"></script>
+    <script src="../libs/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
+    <script src="../libs/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+    <script src="../libs/angular-translate-handler-log/angular-translate-handler-log.min.js"></script>
+    <script src="../libs/angular-dynamic-locale/tmhDynamicLocale.min.js"></script>
+    <script src="../libs/angular-translate-storage-local/angular-translate-storage-local.min.js"></script>
 
     <!-- Angular Material Dependencies -->
 
@@ -33,6 +39,8 @@
     <script src="../js/services/HttpInterceptorService.js"></script>
     <script src="../js/config/Constants.js"></script>
     <script src="../js/routes.js"></script>
+    <script src="../js/services/LocaleService.js"></script>
+    <script src="../js/directives/LanguageSelectDirective.js"></script>
 </head>
 <body layout="row" ng-controller="IndexController">
 <md-sidenav ng-show="$root.userLoginIn" layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
@@ -95,6 +103,7 @@
                     </md-menu-item>
                 </md-menu-content>
             </md-menu>
+            <div translate-language-select></div>
         </div>
     </md-toolbar>
     <md-toolbar class="md-hue-1" ng-show="showSearch">
